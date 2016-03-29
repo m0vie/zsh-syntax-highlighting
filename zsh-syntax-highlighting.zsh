@@ -254,6 +254,21 @@ _zsh_highlight_bind_widgets()
   done
 }
 
+# Wrap special zle-* hooks if already bound, or set them otherwise.
+#
+# Takes a single argument.
+_zsh_highlight_set_or_wrap_special_zle_widget() {
+  local hook="$1"
+  local currentbinding="$widgets[$hook]"
+  if [[ -z "$currentbinding" ]]; then
+    eval "_zsh_highlight_widget_${(q)hook}() { :; _zsh_highlight }"
+    zle -N $hook _zsh_highlight_widget_$hook
+  elif [[ $currentbinding == user:* && $currentbinding != user:_zsh_highlight_widget_* ]]; then
+    eval "_zsh_highlight_widget_${(q)hook}() { ${(q)currentbinding#*:}; _zsh_highlight }"
+    zle -N $hook _zsh_highlight_widget_$hook
+  fi
+}
+
 # Load highlighters from directory.
 #
 # Arguments:
