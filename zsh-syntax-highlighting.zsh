@@ -62,6 +62,12 @@ _zsh_highlight()
   # Store the previous command return code to restore it whatever happens.
   local ret=$?
 
+  # Do not highlight in isearch if ISEARCH_ACTIVE is unsupported (zsh < 5.3).
+  if [[ $WIDGET == zle-isearch-update ]] && ! (( $+ISEARCH_ACTIVE )); then
+    region_highlight=()
+    return $ret
+  fi
+
   setopt localoptions warncreateglobal
   setopt localoptions noksharrays
   local REPLY # don't leak $REPLY into global scope
@@ -312,6 +318,10 @@ _zsh_highlight_bind_widgets || {
 # current line ends and special highlighting logic needs to be applied.
 # E.g. remove cursor imprint, don't highlight partial paths, ...
 _zsh_highlight_set_or_wrap_special_zle_widget zle-line-finish
+
+# Always wrap special zle-isearch-update widget to be notified of updates in isearch
+_zsh_highlight_set_or_wrap_special_zle_widget zle-isearch-update
+
 
 # Resolve highlighters directory location.
 _zsh_highlight_load_highlighters "${ZSH_HIGHLIGHT_HIGHLIGHTERS_DIR:-${${0:A}:h}/highlighters}" || {
