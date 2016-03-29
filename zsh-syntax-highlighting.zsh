@@ -308,6 +308,11 @@ _zsh_highlight_bind_widgets || {
   return 1
 }
 
+# Always wrap special zle-line-finish widget. This is needed to decide if the
+# current line ends and special highlighting logic needs to be applied.
+# E.g. remove cursor imprint, don't highlight partial paths, ...
+_zsh_highlight_set_or_wrap_special_zle_widget zle-line-finish
+
 # Resolve highlighters directory location.
 _zsh_highlight_load_highlighters "${ZSH_HIGHLIGHT_HIGHLIGHTERS_DIR:-${${0:A}:h}/highlighters}" || {
   echo 'zsh-syntax-highlighting: failed loading highlighters, exiting.' >&2
