@@ -22,17 +22,14 @@ How to install
 See [INSTALL.md](INSTALL.md).
 
 
-FAQ
+Troubleshooting
 ---
 
-### Why must `zsh-syntax-highlighting.zsh` be sourced at the end of the `.zshrc` file?
+See [docs/troubleshooting.md](troubleshooting.md).
 
-`zsh-syntax-highlighting.zsh` wraps ZLE widgets.  It must be sourced after all
-custom widgets have been created (i.e., after all `zle -N` calls and after
-running `compinit`).  Widgets created later will work, but will not update the
-syntax highlighting.
 
-### How are new releases announced?
+How are new releases announced?
+---
 
 There is currently no "push" announcements channel.  However, the following
 alternatives exist:
